@@ -1,0 +1,151 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Repository\AdminRepository;
+use Illuminate\Http\Request;
+use App\Repository\BookingRepository;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Auth;
+use App\Models\User;
+
+class AdminController extends Controller
+{
+    public static function dashbord(){
+        $offset = 1;
+        $limit = 5;
+        $bookingList = BookingRepository::getBookingAdmin($limit,$offset);
+        $count = BookingRepository::countBookingAdmin($limit);
+        $stringPage = "/admin/dashbord/".$limit."/";
+        return view('dashbord/admindashbord',compact('bookingList','offset','limit', 'stringPage','count'));
+    }
+
+    public static function dashbordlimit($limit, $offset){
+        $bookingList = BookingRepository::getBookingAdmin($limit,$offset);
+        $count = BookingRepository::countBookingAdmin($limit);
+        $stringPage = "/admin/dashbord/".$limit."/";
+        return view('dashbord/admindashbord',compact('bookingList','offset','limit', 'stringPage','count'));
+    }
+
+    public static function searchlike(Request $req){
+        $bookList = AdminRepository::searchLike();
+        return view("",compact("bookingList"));
+    }
+    public static function getAllBooking(){
+        $bookingList = AdminRepository::getAllBookingAdmin();
+        return view("dashbord/admintest",compact("bookingList"));
+    }
+    public static function settingdashbord(){
+        $userList = AdminRepository::getAllUers();
+        return view("dashbord/settingdashbord",compact("userList"));
+    }
+    public function showPostSetting($userId) {
+        $user = User::where('userId', $userId)->first();
+        
+        if (!$user) {
+            return redirect()->back()->with('error', 'ไม่พบผู้ใช้');
+        }
+    
+        return view('dashbord.postsetting', compact('user'));
+    }
+    
+    public function updatePassword(Request $request, $userId) {
+        $request->validate([
+            'password' => 'required|min:6',
+        ]);
+    
+        $user = User::where('userId', $userId)->first();
+    
+        if (!$user) {
+            return redirect()->back()->with('error', 'ไม่พบผู้ใช้');
+        }
+    
+        // อัปเดตรหัสผ่าน
+        $user->password = bcrypt($request->password);
+        $user->save();
+    
+        return redirect()->route('settingdashbord')->with('success', 'อัปเดตรหัสผ่านสำเร็จ');
+    }
+    
+
+
+    // public static function changepasswordByAdmin(Request $req){
+    //     $req->validate([
+    //         'change_password' => 'required|confirmed',
+    //         'change_password_comfirmtion' =>'required'
+    //     ]);
+    //     User::where('userId','=',Auth::user()->userId)->update([
+    //         'password' => Hash::make($req->change_password)
+    //     ]);
+    //     return redirect('/settingdashbord')->with('success', 'เปลี่ยนรหัสผ่านสำเร็จ!');
+    // }
+    // public static function settingpassword($userId) {
+    //     // $email = Auth::user()->email;
+    //     // $usernames = Auth::user()->username;
+    //     // $phones = Auth::user()->phone;
+    //     $user = User::find($userId);
+    //     return view('/changepasswordByadmin',compact('usernames'));
+    // }
+//     public static function changepasswordByAdmin($userId)
+// {
+//     $user = User::findOrFail($userId); // ค้นหาผู้ใช้ตาม userId
+//     return view('auth.changepassword', compact('user')); // ส่งผู้ใช้ไปในหน้า changepassword
+// }
+// public static function changepasswordByAdmin($userId) {
+//     $user = User::findOrFail($userId); // Get the user by ID
+//     return view('dashbord.changepasswordByAdmin', compact('user')); // Return the password change view with the user data
+// }
+
+// public static function updatepassword(Request $req, $userId) {
+//     $req->validate([
+//         'change_password' => 'required|confirmed',
+//         'change_password_comfirmtion' => 'required',
+//     ]);
+
+//     User::where('userId', '=', $userId)->update([
+//         'password' => Hash::make($req->change_password),
+//     ]);
+
+//     return redirect('/settingdashbord')->with('success', 'เปลี่ยนรหัสผ่านสำเร็จ!');
+// }
+// public function showChangePasswordForm($userId)
+//     {
+//         $user = User::findOrFail($userId);
+//         return view('changepasswordByadmin', compact('user'));
+//     }
+
+    // Handle password update
+    // public function changePassword(Request $request)
+    // {
+    //     $request->validate([
+    //         'userId' => 'required|exists:users,id',
+    //         'password' => 'required|min:6|confirmed',
+    //     ]);
+
+    //     $user = User::findOrFail($request->userId);
+    //     $user->password = Hash::make($request->password);
+    //     $user->save();
+    //     return redirect('/changepasswordByadmin')->with('success', 'เปลี่ยนรหัสผ่านสำเร็จ');
+    //     // return redirect('/settingdashbord')->with('success', 'เปลี่ยนรหัสผ่านสำเร็จ');
+//     // }
+// public static function changePassword(Request $req, $userId) {
+//     $req->validate([
+//         'change_password' => 'required|confirmed',
+//         'change_password_comfirmtion' => 'required',
+//     ]);
+
+//     User::where('userId', '=', $userId)->update([
+//         'password' => Hash::make($req->change_password),
+//     ]);
+
+//     return redirect('/changepasswordByadmin')->with('success', 'เปลี่ยนรหัสผ่านสำเร็จ!');
+// }
+// public static function showChangePasswordForm() {
+//     // $email = Auth::user()->email;
+//     $username = Auth::user()->username;
+//     return view('/changepasswordByadmin',compact('username'));
+// }
+
+
+    
+}
