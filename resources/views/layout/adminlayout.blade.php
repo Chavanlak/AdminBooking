@@ -119,10 +119,10 @@
                     <span class="nav-profile-name">Admin</span>
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="profileDropdown">
-                    <a class="dropdown-item">
+                    {{-- <a class="dropdown-item">
                         <i class="mdi mdi-settings text-primary"></i>
                         Settings
-                    </a>
+                    </a> --}}
                     <a class="dropdown-item"href="/logout" >
                         <i class="mdi mdi-logout text-primary"></i>
                         Logout

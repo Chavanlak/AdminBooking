@@ -47,6 +47,31 @@ class AdminRepository{
     public static function getAllUers(){
         return User::select("user.userId","user.username","user.phone")->get();
     }
+    public static function getSearchByAdmin($limit=5,$offset=1){
+        $k = ((int)$offset-1)*(int)$limit;
+        $bookingDat = Booking::select('booking.bookingId', 'booking.bookingAgenda', 'booking.bookingDate', 'booking.bookingTimeStart', 'booking.bookingTimeFinish', DB::raw('concat(user.department," ",user.phone) as userbookingName'), 'room.roomName')
+        ->join('user','booking.userId','=','user.userId')
+        ->join('room', 'booking.roomId','=','room.roomId')
+        ->orderBy('booking.bookingDate','desc')
+        ->orderBy('booking.bookingTimeStart','desc')
+        ->limit($limit)
+        ->offset($k)
+        ->get();
+        $bookingList = [];
+        foreach($bookingDat as $dat){
+            $bookingList[] = new BookingDTO($dat->bookingId, $dat->bookingAgenda, $dat->bookingDate, $dat->bookingTimes,$dat->bookingTimeStart, $dat->bookingTimeFinish, $dat->userbookingName, $dat->roomName);
+        }
 
-}
+
+        return $bookingList;
+    }
+    public static function countBookingSearchByAdmin($userId,$roomName,$limit){
+        $count = $bookingDat = Booking::join('user','booking.userId','=','user.userId')
+        ->join('room','booking.roomId','=','room.roomId')
+        ->where('room.roomName','like',"%{$roomName}")->get()->count();
+        return (int)ceil($count/$limit);
+    }
+    }
+
+
 ?>

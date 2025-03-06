@@ -82,6 +82,7 @@ class BookingController extends Controller
         return view('booking/bookingupdate',compact('booking','room'));
 
     }
+  
     public static function editBookingbyId(Request $req){
         $bookingId = $req->bookingId;
         $bookingAgenda = $req->bookingAgenda;
@@ -133,7 +134,8 @@ class BookingController extends Controller
 
 // new controller for booking method
 
-    // update for user
+    // update for user 
+  
     public static function editbookingWithId($bookingId){
         $booking = BookingRepository::getBookingbyId($bookingId);
         $room = RoomRepository::getRoomById($booking->roomId);
@@ -180,6 +182,13 @@ class BookingController extends Controller
         return redirect('/booking/editbooking/'.$bookingId)->with('success','แก้ไขการจองเรียบร้อย');
     }
     // update for admin
+
+    public static function updateBookingbyIdbyAdmin($bookingId){
+        $booking = BookingRepository::getBookingbyId($bookingId);
+        $room = RoomRepository::getRoomById($booking->roomId);
+        return view('booking/bookingupdatebyadmin',compact('booking','room'));
+
+    }
     public static function admineditbookingWithId($bookingId){
         $booking = BookingRepository::getBookingbyId($bookingId);
         $room = RoomRepository::getRoomById($booking->roomId);
@@ -220,6 +229,13 @@ class BookingController extends Controller
         }
         return redirect('/admin/editbooking/'.$bookingId)->with('success','แก้ไขการจองเรียบร้อย');
     }
+
+    // public static function adminupdateBookingWithId($bookingId){
+    //     $booking = BookingRepository::getBookingbyId($bookingId);
+    //     $room = RoomRepository::getRoomById($booking->roomId);
+    //     return view('booking/bookingupdate',compact('booking','room'));
+
+    // }
     // add new
 
 

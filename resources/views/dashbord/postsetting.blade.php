@@ -12,11 +12,11 @@
             <div class="card-body">
                 {{-- <form action="{{ url('/postsetting/'.$user->userId) }}" method="POST">
                     @csrf --}}
-                    {{-- <form action="/updatepasswordByadmin" id="" method="POST">
+                {{-- <form action="/updatepasswordByadmin" id="" method="POST">
                         <input type="hidden" name="_token" value="{{ csrf_token() }}"> --}}
-                        <form action="{{ route('updatepasswordByadmin', ['userId' => $user->userId]) }}" method="POST">
-                            @csrf
-                        <div class="form-group">
+                <form action="{{ route('updatepasswordByadmin', ['userId' => $user->userId]) }}" method="POST">
+                    @csrf
+                    <div class="form-group">
                         <label for="username">ชื่อผู้ใช้</label>
                         <input type="text" name="username" value="{{ $user->username }}" class="form-control" readonly>
                     </div>
@@ -30,7 +30,17 @@
                         <label for="password">รหัสผ่านใหม่</label>
                         <input type="password" name="password" class="form-control" required minlength="6">
                     </div>
-
+                    @if (session('success'))
+                        {{-- <div class="alert alert-success"> --}}
+                        <div class="text-success">
+                            {{ session('success') }}
+                        </div>
+                    @elseif(session('error'))
+                        {{-- <div class="alert alert-danger"> --}}
+                        <div class="text-danger">
+                            {{ session('error') }}
+                        </div>
+                    @endif
                     <div>
                         <button type="submit" class="my-3 btn btn-primary"
                             onclick="return confirm('คุณต้องการเปลี่ยนรหัสผ่านหรือไม่')">

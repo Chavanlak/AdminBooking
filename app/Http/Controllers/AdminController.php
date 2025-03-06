@@ -8,6 +8,7 @@ use App\Repository\BookingRepository;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use App\Models\User;
+use App\Models\Booking;
 
 class AdminController extends Controller
 {
@@ -29,7 +30,7 @@ class AdminController extends Controller
 
     public static function searchlike(Request $req){
         $bookList = AdminRepository::searchLike();
-        return view("",compact("bookingList"));
+        return view("dashbord/admindashbord",compact("bookingList"));
     }
     public static function getAllBooking(){
         $bookingList = AdminRepository::getAllBookingAdmin();
@@ -64,9 +65,27 @@ class AdminController extends Controller
         $user->password = bcrypt($request->password);
         $user->save();
     
-        return redirect()->route('settingdashbord')->with('success', 'อัปเดตรหัสผ่านสำเร็จ');
+        // return redirect()->route('settingdashbord')->with('success', 'อัปเดตรหัสผ่านสำเร็จ');
+        // return redirect()->route('dashbord.updatepasswordByadmin')->with('success', 'อัปเดตรหัสผ่านสำเร็จ');
+        return redirect()->route('postsetting', ['userId' => $userId])->with('success', 'อัปเดตรหัสผ่านสำเร็จ');
     }
-    
+ 
+      public static function searchingUserByAdmin(Request $req){
+       $offset = 1;
+       $limit = $req->limit;
+       $roomName = $req->roomName;
+       $bookingList = AdminRepository::getSearchByAdmin(Auth::user()->userId,$roomName,$limit,$offset);
+       $stringPage = "/admin/search".$roomName."/".$limit."/";
+       $count = AdminRepository::countBookingSearchByAdmin(Auth::user()->userId,$roomName,$limit);
+       return view('dashbord/admindashbord',compact('bookingList','offset','limit', 'stringPage','count'));
+       
+    }
+    public static function searchnextpageByAdmin($roomName, $limit, $offset){
+        $bookingList = AdminRepository::getSearchByAdmin(Auth::user()->userId,$roomName,$limit, $offset);
+        $stringPage = "/admin/search/".$roomName."/".$limit."/";
+        $count = AdminRepository::countBookingSearchByAdmin(Auth::user()->userId,$roomName, $limit);
+        return view('dashbord/userdashbord',compact('bookingList','offset','limit', 'stringPage','count'));
+    }
 
 
     // public static function changepasswordByAdmin(Request $req){
