@@ -75,14 +75,14 @@ class BookingController extends Controller
         return redirect('/booking/' . $roomId)->with('message', '*');
     }
 
-
+//route auth
     public static function updateBookingbyId($bookingId){
         $booking = BookingRepository::getBookingbyId($bookingId);
         $room = RoomRepository::getRoomById($booking->roomId);
         return view('booking/bookingupdate',compact('booking','room'));
 
     }
-  
+  //route auth
     public static function editBookingbyId(Request $req){
         $bookingId = $req->bookingId;
         $bookingAgenda = $req->bookingAgenda;

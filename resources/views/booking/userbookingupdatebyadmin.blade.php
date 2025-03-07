@@ -6,19 +6,18 @@
     <div class="col-12 grid-margin stretch-card">
         <div class="card">
             <div class="card-body">
-                <div class="card-title">เเก้ไขการจองห้อง(Admin)</div>
+                <div class="card-title">เเก้ไขการจองห้อง</div>
                 <p class="card-description">
                     เเก้ไขการจองห้องประชุม {{$room->roomName}}
                 </p>
-                {{-- @if (session('message'))
+                @if (session('message'))
                 <h6 class="font-weight-bold text-danger">{{session('message')}}</h6>
-                @endif --}}
+                @endif
 
                 @if (session('success'))
                 <h6 class="font-weight-bold text-success">{{session('success')}}</h6>
                 @endif
-                <form class="forms-sample"  action="/admin/adminbookingupdate" method="post" >
-                    {{-- <form class="forms-sample"  action="/adminbookingupdate" method="post" > --}}
+                <form class="forms-sample"  action="/admin/updatebooking" method="post" >
                     <input type="hidden" name="_token" value="{{ csrf_token() }}">
                     <div class="form-group">
                         <label for="roomnameInput">ชื่อห้องประชุม</label>
@@ -33,18 +32,7 @@
                         <input type="date" class="form-control" id="roomnameInput" name="bookingDate" value="{{$booking->bookingDate}}" required>
                     </div>
                     <div class="form-group">
-                        @if (session('message'))
-                        <div class="row" id="time">
-                            <div class="col-sm-6">
-                                <label for="timestart">เวลาเริ่ม {{session('message')}}</label>
-                                <input type="time" class="form-control" id="timestart" name="bookingTimeStart" value="{{$booking->bookingTimeStart}}" required>
-                            </div>
-                            <div class="col-sm-6">
-                                <label for="timeend">เวลาสิ้นสุด {{session('message')}}</label>
-                                <input type="time" class="form-control" id="timeend" name="bookingTimeFinish" value="{{$booking->bookingTimeFinish}}" required>
-                            </div>
-                        </div>
-                        @else
+                        <label for="time">เวลาที่ใช้ห้อง</label>
                         <div class="row" id="time">
                             <div class="col-sm-6">
                                 <label for="timestart">เวลาเริ่ม</label>
@@ -55,20 +43,6 @@
                                 <input type="time" class="form-control" id="timeend" name="bookingTimeFinish" value="{{$booking->bookingTimeFinish}}" required>
                             </div>
                         </div>
-                        @endif
-
-
-                        {{-- <label for="time">เวลาที่ใช้ห้อง</label>
-                        <div class="row" id="time">
-                            <div class="col-sm-6">
-                                <label for="timestart">เวลาเริ่ม</label>
-                                <input type="time" class="form-control" id="timestart" name="bookingTimeStart" value="{{$booking->bookingTimeStart}}" required>
-                            </div>
-                            <div class="col-sm-6">
-                                <label for="timeend">เวลาสิ้นสุด</label>
-                                <input type="time" class="form-control" id="timeend" name="bookingTimeFinish" value="{{$booking->bookingTimeFinish}}" required>
-                            </div>
-                        </div> --}}
 
                     </div>
                     {{-- userid => 1 --}}

@@ -87,8 +87,8 @@ Route::group(['prefix'=>'admin','middleware'=>'isAdmin'],function(){
     Route::get('/searchadmin/{roomName}/{limit}/{offset}',[AdminController::class,'searchnextpageByAdmin']);
     // Route::get('/editbooking/{bookingId}',[BookingController::class,'admineditbookingWithId']);
     // Route::post('/updatebooking',[BookingController::class,'adminupdateBookingWithId']);
-    Route::get('/editbooking/{bookingId}',[BookingController::class,'adminupdateBookingWithId']);
-    Route::post('/updatebooking',[BookingController::class,'admineditbookingWithId']);
+    Route::get('/editbooking/{bookingId}',[AdminController::class,'updateBookingbyIdFromAdmin']);
+    Route::post('/updatebooking',[AdminController::class,'editBookingbyIdfromAdmin']);
 
     // Route::get('/settingdashbord',[AdminController::class,'settingdashbord']);
     // Route::post('/changpasswordByadmin',[AuthController::class,'updatepassword']);
