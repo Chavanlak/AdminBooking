@@ -83,8 +83,11 @@ Route::group(['prefix'=>'user','middleware'=>'isUser'], function(){
 Route::group(['prefix'=>'admin','middleware'=>'isAdmin'],function(){
     Route::get('/dashbord',[AdminController::class,'dashbord']);
     Route::get('/dashbord/{limit}/{offset}',[AdminController::class,'dashbordlimit']);
+    // Route::post('/searchadmin',[AdminController::class,'searchingUserByAdmin']);
+    // Route::get('/searchadmin/{roomName}/{limit}/{offset}',[AdminController::class,'searchnextpageByAdmin']);
     Route::post('/searchadmin',[AdminController::class,'searchingUserByAdmin']);
     Route::get('/searchadmin/{roomName}/{limit}/{offset}',[AdminController::class,'searchnextpageByAdmin']);
+    
     // Route::get('/editbooking/{bookingId}',[BookingController::class,'admineditbookingWithId']);
     // Route::post('/updatebooking',[BookingController::class,'adminupdateBookingWithId']);
     Route::get('/editbooking/{bookingId}',[AdminController::class,'updateBookingbyIdFromAdmin']);
@@ -109,6 +112,9 @@ Route::group(['prefix'=>'booking','middleware'=>'BookingRoom'],function(){
     // add new
     Route::get('/{roomId}',[BookingController::class,'getBookingInRoom']);;
     Route::post('/addbooking',[BookingController::class,'addBooking']);
+     //admin
+     Route::get('/editbookingadmin/{bookingId}',[AdminController::class,'editbookingWithIdByAdmin']);
+    Route::post('/updatebookingadmin',[AdminController::class,'updateBookingWithIdByAdmin']);
 
 
 

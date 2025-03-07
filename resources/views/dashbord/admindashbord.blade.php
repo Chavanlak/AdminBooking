@@ -62,7 +62,7 @@
                                                 onclick="return confirm('คุณต้องการลบการจอง {{ $booking->bookingId }}หรือไม่')">
                                                 ลบ
                                             </a>
-                                            <a href="/booking/editbooking/{{ $booking->bookingId }}"
+                                            <a href="/admin/editbooking/{{ $booking->bookingId }}"
                                                 class="btn btn-warning " style="width: 100px; height: 40px;">
                                                 แก้ไข</a>
 

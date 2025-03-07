@@ -71,7 +71,15 @@ class AdminRepository{
         ->where('room.roomName','like',"%{$roomName}")->get()->count();
         return (int)ceil($count/$limit);
     }
+    public static function searchingallRoom($roomName,$userId){
+        return Booking::select('booking.roomId','room.roomName','user.username','user.phone')
+        ->join('room','room.roomId','=','booing','booking.roomId')
+        ->join('user','user.userId','=','booking','booking.roomId')
+        ->where('room.roomName','like',"%{$roomName}%")
+        ->orderByDesc('booking.roomId')
+        ->get();
+    }
     }
 
-
+    
 ?>
