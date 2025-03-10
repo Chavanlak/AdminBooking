@@ -83,10 +83,10 @@ Route::group(['prefix'=>'user','middleware'=>'isUser'], function(){
 Route::group(['prefix'=>'admin','middleware'=>'isAdmin'],function(){
     Route::get('/dashbord',[AdminController::class,'dashbord']);
     Route::get('/dashbord/{limit}/{offset}',[AdminController::class,'dashbordlimit']);
+    Route::post('/searchadmin',[AdminController::class,'searchbookingbyAdmin']);
+    Route::get('/searchadmin/{roomName}/{limit}/{offset}',[AdminController::class,'searchnextpagebyAdmin']);
     // Route::post('/searchadmin',[AdminController::class,'searchingUserByAdmin']);
     // Route::get('/searchadmin/{roomName}/{limit}/{offset}',[AdminController::class,'searchnextpageByAdmin']);
-    Route::post('/searchadmin',[AdminController::class,'searchingUserByAdmin']);
-    Route::get('/searchadmin/{roomName}/{limit}/{offset}',[AdminController::class,'searchnextpageByAdmin']);
     
     // Route::get('/editbooking/{bookingId}',[BookingController::class,'admineditbookingWithId']);
     // Route::post('/updatebooking',[BookingController::class,'adminupdateBookingWithId']);
@@ -183,3 +183,4 @@ Route::get('/settingdashbord', [AdminController::class, 'settingdashbord'])->nam
 
 Route::get('/postsetting/{userId}', [AdminController::class, 'showPostSetting'])->name('postsetting');
 Route::post('/updatepasswordByadmin/{userId}', [AdminController::class, 'updatePassword'])->name('updatepasswordByadmin');
+// Route::get('/admin/search', [AdminController::class, 'searchByRoom'])->name('admin.searchByRoom');

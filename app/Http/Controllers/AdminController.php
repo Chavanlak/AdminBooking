@@ -79,23 +79,23 @@ class AdminController extends Controller
         return redirect()->route('postsetting', ['userId' => $userId])->with('success', 'อัปเดตรหัสผ่านสำเร็จ');
     }
 
-    public static function searchingUserByAdmin(Request $req)
-    {
-        $offset = 1;
-        $limit = $req->limit;
-        $roomName = $req->roomName;
-        $bookingList = AdminRepository::getSearchByAdmin(Auth::user()->userId, $roomName, $limit, $offset);
-        $stringPage = "/admin/search" . $roomName . "/" . $limit . "/";
-        $count = AdminRepository::countBookingSearchByAdmin(Auth::user()->userId, $roomName, $limit);
-        return view('dashbord/admindashbord', compact('bookingList', 'offset', 'limit', 'stringPage', 'count'));
-    }
-    public static function searchnextpageByAdmin($roomName, $limit, $offset)
-    {
-        $bookingList = AdminRepository::getSearchByAdmin(Auth::user()->userId, $roomName, $limit, $offset);
-        $stringPage = "/admin/search/" . $roomName . "/" . $limit . "/";
-        $count = AdminRepository::countBookingSearchByAdmin(Auth::user()->userId, $roomName, $limit);
-        return view('dashbord/userdashbord', compact('bookingList', 'offset', 'limit', 'stringPage', 'count'));
-    }
+    // public static function searchingUserByAdmin(Request $req)
+    // {
+    //     $offset = 1;
+    //     $limit = $req->limit;
+    //     $roomName = $req->roomName;
+    //     $bookingList = AdminRepository::getSearchByAdmin(Auth::user()->userId, $roomName, $limit, $offset);
+    //     $stringPage = "/admin/search" . $roomName . "/" . $limit . "/";
+    //     $count = AdminRepository::countBookingSearchByAdmin(Auth::user()->userId, $roomName, $limit);
+    //     return view('dashbord/admindashbord', compact('bookingList', 'offset', 'limit', 'stringPage', 'count'));
+    // }
+    // public static function searchnextpageByAdmin($roomName, $limit, $offset)
+    // {
+    //     $bookingList = AdminRepository::getSearchByAdmin(Auth::user()->userId, $roomName, $limit, $offset);
+    //     $stringPage = "/admin/search/" . $roomName . "/" . $limit . "/";
+    //     $count = AdminRepository::countBookingSearchByAdmin(Auth::user()->userId, $roomName, $limit);
+    //     return view('dashbord/userdashbord', compact('bookingList', 'offset', 'limit', 'stringPage', 'count'));
+    // }
 
 
     // public static function changepasswordByAdmin(Request $req){
@@ -271,9 +271,63 @@ class AdminController extends Controller
 
         return redirect('/admin/editbooking/' . $bookingId)->with('success', 'แก้ไขการจองเรียบร้อย');
     }
-    public static function getsearchingbyroom(Request $req) {
+    // public static function getsearchingbyroom(Request $req) {
+    //     $roomName = $req->roomName;
+    //     $bookingList = AdminRepository::searchingallRoom(Auth::user()->userId,$roomName);
+    //     return view('dashbord/admindashbord',compact('bookingList'));
+    // }
+    // public static function getsearchingbyroom(Request $req) {
+    //     $roomName = $req->roomName;
+    
+    //     // ถ้ามีการค้นหาให้ใช้ค่า roomName แต่ถ้าไม่มีให้ดึงข้อมูลทั้งหมด
+    //     if ($roomName) {
+    //         $bookingList = AdminRepository::searchingallRoom(Auth::user()->userId, $roomName);
+    //     } else {
+    //         $bookingList = AdminRepository::searchingallRoom(Auth::user()->userId, null);
+    //     }
+    
+    //     return view('dashbord.userdashbord', compact('bookingList'));
+    // // }
+    public function searchByRoom(Request $req) {
+        // $roomName = $req->input('roomName');
+        $offset = 1;
+        $limit = $req->limit;
         $roomName = $req->roomName;
-        $bookingList = AdminRepository::searchingallRoom(Auth::user()->userId,$roomName);
-        return view('dashbord/userdashbord',compact('bookingList'));
+    
+        // ค้นหาข้อมูลหากมีค่าที่ถูกป้อนเข้ามา
+        if ($roomName) {
+            $bookingList = AdminRepository::searchingallRoom(Auth::user()->userId, $roomName);
+        } else {
+            $bookingList = AdminRepository::searchingallRoom(Auth::user()->userId, null);
+        }
+    
+        return view('dashbord/admindashbord', compact('bookingList'));
     }
+
+    public static function dashbordlimitAdmin($limit,$offset){
+        $bookingList = AdminRepository::getUserBookingByadmin(Auth::user()->userId, $limit, $offset);
+        $count = AdminRepository::countUserBookingbyAdmin(Auth::user()->userId, $limit);
+        $stringPage = "/admin/dashbord/".$limit."/";
+        return view('dashbord/admindashbord',compact('bookingList','offset','limit', 'stringPage','count'));
+    }
+    public static function searchbookingbyAdmin(Request $req){
+        $offset = 1;
+        $limit = $req->limit;
+        $roomName = $req->roomName;
+        $bookingList = AdminRepository::getUserBookingSearchbyAdmin(Auth::user()->userId,$roomName,$limit,$offset);
+        $stringPage = "/admin/search/".$roomName."/".$limit."/";
+        $count = AdminRepository::countUserBookingSearchbyAdmin(Auth::user()->userId,$roomName, $limit);
+        return view('dashbord/admindashbord',compact('bookingList','offset','limit', 'stringPage','count'));
+    }
+    public static function searchnextpagebyAdmin($roomName, $limit, $offset){
+        $bookingList = AdminRepository::getUserBookingSearchbyAdmin(Auth::user()->userId,$roomName,$limit, $offset);
+        $stringPage = "/admin/searchadmin/".$roomName."/".$limit."/";
+        $count = AdminRepository::countUserBookingSearchbyAdmin(Auth::user()->userId,$roomName, $limit);
+        return view('dashbord/admindashbord',compact('bookingList','offset','limit', 'stringPage','count'));
+    }
+    public static function getBookigserchbyAdmin(Request $req){
+        
+    }
+   
+    
 }

@@ -17,8 +17,11 @@
                             <input type="text" class="form-control" name="search" placeholder="ค้นหา...">
                             <button type="submit" class="btn btn-info">ค้นหา</button>
                         </form> --}}
-                            <form method="post" action="/admin/search" class="input-group form-control-sm">
-                            {{-- <form class="d-flex gap-2"> --}}
+                            {{-- <form method="post" action="/admin/search" class="input-group form-control-sm"> --}}
+                            {{-- <form method="GET" action="{{ route('admin.searchByRoom') }}" class="d-flex gap-2"> --}}
+                            <form method="post" action="/admin/searchadmin" class="input-group form-control-sm">
+                                {{-- you must to connected with route path Route::post('/searchadmin',[AdminController::class,'searchbookingbyAdmin']); or ou can write in front of thispath /admin/searchadmin --}}
+                                {{-- <form method="post" action=" /admin/searchadmin" class="input-group form-control-sm"> --}}
                                 <input type="hidden" name="_token" value="{{ csrf_token() }}">
                                 <input type="text" placeholder="ค้นหา..." name="roomName"
                                     style="background-color: rgba(245, 245, 245, 0.39)">
@@ -26,48 +29,58 @@
                                 <input type="hidden" value="{{ $limit }}" name="limit">
                                 <input type="submit" class="btn btn-primary" value="ค้นหา" />
                             </form>
+                            {{-- <form method="GET" action="{{ route('admin.searchByRoom') }}" class="d-flex gap-2">
+                                <input type="text" class="form-control" name="roomName" placeholder="ค้นหาห้อง..." value="{{ request('roomName') }}">
+                                <button type="submit" class="btn btn-primary">ค้นหา</button>
+                            </form> --}}
+
                         </div>
                     </div>
                 </div>
                 <div class="card-body">
-                    <div class="table-responsive">
-                        <table class="table">
-                            <thead>
-                                <tr>
-                                    <th style="text-align: center">ลำดับ</th>
-                                    <th style="text-align: center">หัวข้อการประชุม</th>
-                                    <th style="text-align: center">วันที่ใช้งาน</th>
-                                    <th style="text-align: center">เวลาเริ่ม</th>
-                                    <th style="text-align: center">เวลาสิ้นสุด</th>
-                                    <th style="text-align: center">ผู้จอง</th>
-                                    <th style="text-align: center">ห้อง</th>
-                                    <th colspan="2" style="text-align: center">เมนู</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($bookingList as $booking)
+                    @if (!empty($bookingList))
+                        <div class="table-responsive">
+                            <table class="table">
+                                <thead>
                                     <tr>
-                                        <td style="text-align: center">{{ $loop->iteration + ((int) $offset - 1) * (int) $limit }}
-                                        </td>
-                                        <td style="text-align: center">{{ $booking->bookingAgenda }}</td>
-                                        <td style="text-align: center">{{ $booking->bookingDate }}</td>
-                                        <td style="text-align: center">{{ $booking->bookingTimeStart }}</td>
-                                        <td style="text-align: center">{{ $booking->bookingTimeFinish }}</td>
-                                        <td style="text-align: center">{{ $booking->userbookingName }}</td>
-                                        <td style="text-align: center">{{ $booking->roomName }}</td>
-                                        <td style="text-align: center;">
-                                            <a href="{{ route('delete', $booking->bookingId) }}" class="btn btn-danger"
-                                                {{-- style="margin-right: 30px"  --}}
-                                                style="margin-right: 30px; width: 100px; height: 40px "
-                                                onclick="return confirm('คุณต้องการลบการจอง {{ $booking->bookingId }}หรือไม่')">
-                                                ลบ
-                                            </a>
-                                            <a href="/admin/editbooking/{{ $booking->bookingId }}"
-                                                class="btn btn-warning " style="width: 100px; height: 40px;">
-                                                แก้ไข</a>
+                                        <th style="text-align: center">ลำดับ</th>
+                                        <th style="text-align: center">หัวข้อการประชุม</th>
+                                        <th style="text-align: center">วันที่ใช้งาน</th>
+                                        <th style="text-align: center">เวลาเริ่ม</th>
+                                        <th style="text-align: center">เวลาสิ้นสุด</th>
+                                        <th style="text-align: center">ผู้จอง</th>
+                                        <th style="text-align: center">ห้อง</th>
+                                        <th colspan="2" style="text-align: center">เมนู</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    @foreach ($bookingList as $booking)
+                                        <tr>
+                                            {{-- <td style="text-align: center">
+                                            {{ $loop->iteration + ((int) $offset - 1) * (int) $limit }}
+                                        </td> --}}
+                                            <td style="text-align: center">
+                                                {{ $loop->iteration + ((int) $offset - 1) * (int) $limit }}</td>
+                                            <td style="text-align: center">{{ $booking->bookingAgenda }}</td>
+                                            <td style="text-align: center">{{ $booking->bookingDate }}</td>
+                                            <td style="text-align: center">{{ $booking->bookingTimeStart }}</td>
+                                            <td style="text-align: center">{{ $booking->bookingTimeFinish }}</td>
+                                            <td style="text-align: center">{{ $booking->userbookingName }}</td>
+                                            <td style="text-align: center">{{ $booking->roomName }}</td>
+                                            <td style="text-align: center;">
+                                                <a href="{{ route('delete', $booking->bookingId) }}" class="btn btn-danger"
+                                                    {{-- style="margin-right: 30px"  --}}
+                                                    style="margin-right: 30px; width: 100px; height: 40px "
+                                                    onclick="return confirm('คุณต้องการลบการจอง {{ $booking->bookingId }}หรือไม่')">
+                                                    ลบ
+                                                </a>
+                                                <a href="/admin/editbooking/{{ $booking->bookingId }}"
+                                                    class="btn btn-warning " style="width: 100px; height: 40px;">
+                                                    แก้ไข</a>
 
-                                        </td>
-                                        {{-- @if (\Carbon\Carbon::parse($booking->bookingDate . ' ' . $booking->bookingTimeStart)->lt(\Carbon\Carbon::now()))
+                                            </td>
+                                            {{-- @endif --}}
+                                            {{-- @if (\Carbon\Carbon::parse($booking->bookingDate . ' ' . $booking->bookingTimeStart)->lt(\Carbon\Carbon::now()))
                                     <td colspan="2" style="text-align: center">
                                         ไม่สามารถแก้ไขหรือลบได้เนื่องจากเวลาเลยกำหนด
                                     </td>
@@ -80,11 +93,14 @@
                                     </td>
                                     @endif --}}
 
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    @else
+                        <p class="text-center text-muted">ไม่มีข้อมูลการจองห้อง</p>
+                    @endif
                 </div>
                 <div class="card-footer">
                     <nav aria-label="Page navigation example">
@@ -104,7 +120,8 @@
                             @for ($i = 1; $i <= $count; $i++)
                                 @if ($i == $offset)
                                     <li class="page-item">
-                                        <a class="page-link active" href="{{ $stringPage . '' . $i }}">{{ $i }}</a>
+                                        <a class="page-link active"
+                                            href="{{ $stringPage . '' . $i }}">{{ $i }}</a>
                                     </li>
                                 @else
                                     <li class="page-item">

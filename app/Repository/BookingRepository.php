@@ -184,6 +184,7 @@ class BookingRepository
         ->limit($limit)
         ->offset($k)
         ->get();
+        // dd($bookingDat);
         $bookingList = [];
         foreach($bookingDat as $dat){
             $bookingList[] = new BookingDTO($dat->bookingId, $dat->bookingAgenda, $dat->bookingDate, $dat->bookingTimeStart, $dat->bookingTimeFinish, $dat->userbookingName, $dat->roomName,$dat->bookingTimes);
